@@ -28,19 +28,19 @@ export async function GET() {
       connectionInfo: sanitizedDbInfo,
       databaseInfo: testResult.rows[0]
     });
-  } catch (error) {
+  } catch (error: unknown) {
     console.error('Detailed connection error:', {
-      name: error.name,
-      message: error.message,
-      code: error.code
+      name: (error as Error).name,
+      message: (error as Error).message,
+      code: (error as {code?: string}).code
     });
 
     return Response.json({
       status: 'error',
       connectionInfo: {
-        error: error.message,
-        type: error.name,
-        code: error.code
+        error: (error as Error).message,
+        type: (error as Error).name,
+        code: (error as {code?: string}).code
       },
       troubleshooting: {
         checkPoints: [

@@ -37,8 +37,8 @@ export async function GET() {
     console.error('数据库检查错误:', error);
     return Response.json({ 
       status: 'error',
-      error: error.message,
-      stack: error.stack 
+      error: (error as Error).message,
+      stack: (error as Error).stack 
     }, { status: 500 });
   }
 }

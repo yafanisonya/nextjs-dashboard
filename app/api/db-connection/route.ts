@@ -34,10 +34,10 @@ export async function GET() {
       urlPreview,
       postgresVersion: result.rows[0].version
     });
-  } catch (error) {
+  } catch (error: any) {
     console.error('Connection error details:', {
       name: error.name,
-      message: error.message,
+      message: error.message, 
       code: error.code,
       env: envVars // 现在可以安全访问
     });

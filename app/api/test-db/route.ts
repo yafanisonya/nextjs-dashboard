@@ -15,20 +15,19 @@ export async function GET() {
       timestamp: result.rows[0],
       connection: 'successful'
     });
-  } catch (error) {
+  } catch (error: unknown) {
     console.error('连接错误详情:', {
-      message: error.message,
-      code: error.code,
-      stack: error.stack
+      message: error instanceof Error ? error.message : String(error),
+      code: error instanceof Error && 'code' in error ? (error as any).code : undefined,
+      stack: error instanceof Error ? error.stack : undefined
     });
-    
     return Response.json({
       status: 'error',
-      message: error.message,
+      message: error instanceof Error ? error.message : String(error),
       details: {
-        code: error.code,
+        code: error instanceof Error && 'code' in error ? (error as any).code : undefined,
         // 仅在开发环境显示完整错误
-        stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
+        stack: error instanceof Error ? (process.env.NODE_ENV === 'development' ? error.stack : undefined) : undefined
       }
     }, { status: 500 });
   }
